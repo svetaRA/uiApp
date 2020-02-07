@@ -16,7 +16,7 @@ constructor(props){
 
 render(){
 	const employee= this.props.employee;
-	//var newEmp= this.props.newEmp;
+	var newEmp= this.props.newEmp;
 	//alert("newEmp"+newEmp);
 	
 	if(!employee) return null;

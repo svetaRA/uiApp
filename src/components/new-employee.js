@@ -27,10 +27,11 @@ class NewEmployee extends React.Component{
 		this.props.onSubmit(this.state);
 	}
 	render(){
-		const newEmp= this.props.newEmp;
+		//const newEmp= this.props.newEmp; 
+		//const name=this.props.name;
 		
 		return(
-		<div>
+		<div> 
 	<label>Employee First Name:</label>
 	<input type="hidden" name= "id"  value={this.state.id} onChange={this.changeHandler} />
 	<input type="text" name= "firstname"  value={this.state.firstname} onChange={this.changeHandler} />
