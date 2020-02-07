@@ -27,7 +27,7 @@ class NewEmployee extends React.Component{
 		this.props.onSubmit(this.state);
 	}
 	render(){
-	//	const newEmp= this.props.newEmp;
+		const newEmp= this.props.newEmp;
 		
 		return(
 		<div>
