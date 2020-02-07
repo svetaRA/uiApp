@@ -1,26 +1,145 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ReactDOM from 'react-dom';
+import App from './App';
+import EmpDetails from './components/emp-details';
+import NewEmployee from './components/new-employee';
+import employeeService from './shared/employee-service';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class Employee extends React.Component{
+	
+	constructor(props){
+	super(props);
+	this.employeeService= new employeeService();
+	this.onSelect= this.onSelect.bind(this);
+	this.onNewEmployee=this.onNewEmployee.bind(this);
+	
+	this.state={
+	
+		
+	showEmpDetails:true,
+      showDetails: false,
+     // editItem: false,
+      selectedEmp: null,
+	  newEmp:false,
+      //newItem: null
+    
+		
+	};
+	
+	//this.input=React.createRef();
+	}
+	/*updateSubmit(){
+		
+		this.setState({
+			showEmpDetails:false,
+			showDetails:false,
+			newEmp:true,
+			
+			});
+	
+		
+		
+	}*/
+	addEmployee(newEmp){
+		alert("test"+newEmp);
+		this.clearState();
+		this.employeeService.addEmployee(newEmp).then(employee=>{
+			
+			this.getEmployess();
+		});
+		
+		
+		
+	}
+	componentDidMount(){
+		//alert("test111");
+		this.getEmployess();
+	}
+	
+	
+getEmployess() {
+    this.employeeService.getEmployess().then(employees => {
+		//alert("dfdf"+employees);
+          this.setState({employees: employees});
+        }
+    );
+  }
+  onSelect(id) {
+    this.clearState();
+	//alert("calling");
+    this.employeeService.getEmployee(id).then(employee => {
+      this.setState({
+		  showEmpDetails:false,
+          showDetails: true,
+          selectedEmp: employee,
+		  newEmp:false,
+        });
+      }
+    );
+  }
+  onNewEmployee(){
+	 // alert("test");
+	  this.clearState();
+	  this.setState({
+		  showEmpDetails:false,
+		  showDetails:false,
+		  newEmp:true
+		  });
+	  
+  }
+  updateSubmit(){
+//	alert("newEmp::"+newEmp);
+	this.setState({newEmp:true,});
+	//newEmp
+	
 }
+  clearState() {
+    this.setState({
+		showEmpDetails:false,
+      showDetails: false,
+      selectedEmp: null,
+	 // newEmp:false,
+      //editItem: false,
+      //newItem: null
+    });
+  }
+render(){
+	const employees = this.state.employees;
+	const showDetails = this.state.showDetails;
+	const showEmpDetails = this.state.showEmpDetails;
+    const selectedEmp = this.state.selectedEmp;
+	const newEmp=this.state.newEmp;
+	//alert("newEmp"+newEmp);
+	if(!employees) return null; 
+	
+	const listEmployees = employees.map((employee) =>
+      <li key={employee.id} onClick={() => this.onSelect(employee.id)}>
+         <span>{employee.firstname }| {employee.lastname}</span> 
+      </li>
+    );
+	//if(showEmpDetails){
+	return(  
+	<form>
+	<h1>Employee Data:</h1>
+	<ul>
+    {listEmployees}
+    </ul>
+	<div>
+	<input type="button" value="Add New Employee" onClick={()=>this.onNewEmployee()}/> 
+	<br/>
+	{newEmp && <NewEmployee newEmp={newEmp}/>}
+	{showDetails && selectedEmp && <EmpDetails employee={selectedEmp} />}
+	</div>
+	
+	
+	   
+	</form>
+	);
+	//}
+	
+}  
 
-export default App;
+}  
+
+ReactDOM.render(<Employee />,document.getElementById('root')); 
+ 
