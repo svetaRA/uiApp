@@ -23,7 +23,7 @@ render(){
 	return(
 	
 		<div>  
-	<h1>Employee Details:</h1>
+	<h1>Employee Details changed:</h1>
 
 	
 	 <div><span>First Name:</span>{employee.firstname}</div>
